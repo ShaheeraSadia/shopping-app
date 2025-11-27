@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Modern shopping app with product listings and cart functionality" />
+    <meta name="description" content="Modern shopping app with real product images" />
     <title>ShopEasy - Your Online Shopping Destination</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -150,6 +150,7 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .search-input {
@@ -177,6 +178,21 @@
             font-size: 1rem;
             background: #f8f9fa;
             cursor: pointer;
+            min-width: 150px;
+        }
+
+        .price-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .price-input {
+            width: 80px;
+            padding: 0.5rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            text-align: center;
         }
 
         /* Products Grid */
@@ -203,16 +219,34 @@
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .product-image {
+        .product-image-container {
+            position: relative;
             width: 100%;
             height: 200px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #e74c3c;
             color: white;
-            font-size: 3rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
 
         .product-content {
@@ -241,6 +275,14 @@
             font-weight: 700;
             color: #2c5aa0;
             margin-bottom: 1rem;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            margin-bottom: 1rem;
+            color: #ffc107;
         }
 
         .add-to-cart-btn {
@@ -350,13 +392,14 @@
             width: 80px;
             height: 80px;
             border-radius: 8px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
+            overflow: hidden;
             flex-shrink: 0;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .cart-item-details {
@@ -562,10 +605,15 @@
             
             .search-filter {
                 flex-direction: column;
+                align-items: stretch;
             }
             
             .search-input, .category-filter {
                 min-width: auto;
+            }
+            
+            .price-filter {
+                justify-content: center;
             }
             
             .products-grid {
@@ -657,6 +705,18 @@
         .success-animation {
             animation: successPulse 0.5s ease;
         }
+        
+        /* Loading state */
+        .image-loading {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <body>
@@ -665,7 +725,7 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // Sample product data
+        // Sample product data with real image URLs
         const sampleProducts = [
             {
                 id: 1,
@@ -673,7 +733,9 @@
                 description: "High-quality wireless headphones with noise cancellation",
                 price: 149.99,
                 category: "electronics",
-                image: "🎧"
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.5,
+                badge: "Bestseller"
             },
             {
                 id: 2,
@@ -681,7 +743,9 @@
                 description: "Feature-rich smartwatch with health monitoring",
                 price: 199.99,
                 category: "electronics",
-                image: "⌚"
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.3,
+                badge: "New"
             },
             {
                 id: 3,
@@ -689,15 +753,18 @@
                 description: "Comfortable running shoes for all terrains",
                 price: 89.99,
                 category: "fashion",
-                image: "👟"
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.7,
+                badge: "Popular"
             },
             {
                 id: 4,
-                name: "Backpack",
+                name: "Designer Backpack",
                 description: "Durable backpack with laptop compartment",
                 price: 59.99,
                 category: "fashion",
-                image: "🎒"
+                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.4
             },
             {
                 id: 5,
@@ -705,7 +772,9 @@
                 description: "Automatic coffee maker with programmable settings",
                 price: 79.99,
                 category: "home",
-                image: "☕"
+                image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.6,
+                badge: "Sale"
             },
             {
                 id: 6,
@@ -713,7 +782,8 @@
                 description: "Adjustable LED desk lamp with multiple brightness levels",
                 price: 39.99,
                 category: "home",
-                image: "💡"
+                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.2
             },
             {
                 id: 7,
@@ -721,7 +791,9 @@
                 description: "Non-slip yoga mat for comfortable workouts",
                 price: 29.99,
                 category: "sports",
-                image: "🧘"
+                image: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.8,
+                badge: "Bestseller"
             },
             {
                 id: 8,
@@ -729,7 +801,47 @@
                 description: "Insulated water bottle that keeps drinks cold for 24 hours",
                 price: 24.99,
                 category: "sports",
-                image: "💧"
+                image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.5
+            },
+            {
+                id: 9,
+                name: "Laptop",
+                description: "High-performance laptop for work and gaming",
+                price: 899.99,
+                category: "electronics",
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.7,
+                badge: "Premium"
+            },
+            {
+                id: 10,
+                name: "Smartphone",
+                description: "Latest smartphone with advanced camera features",
+                price: 699.99,
+                category: "electronics",
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.6,
+                badge: "New"
+            },
+            {
+                id: 11,
+                name: "Sunglasses",
+                description: "Stylish sunglasses with UV protection",
+                price: 49.99,
+                category: "fashion",
+                image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.3
+            },
+            {
+                id: 12,
+                name: "Blender",
+                description: "Powerful blender for smoothies and food preparation",
+                price: 69.99,
+                category: "home",
+                image: "https://images.unsplash.com/photo-1571224237891-bfb7fcd7d9cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                rating: 4.4,
+                badge: "Sale"
             }
         ];
 
@@ -776,6 +888,7 @@
         // Product Card Component
         function ProductCard({ product, onAddToCart, inCart }) {
             const [isAdding, setIsAdding] = useState(false);
+            const [imageLoaded, setImageLoaded] = useState(false);
 
             const handleAddToCart = async () => {
                 if (!isAdding) {
@@ -786,11 +899,59 @@
                 }
             };
 
+            const handleImageLoad = () => {
+                setImageLoaded(true);
+            };
+
+            const renderStars = (rating) => {
+                const stars = [];
+                const fullStars = Math.floor(rating);
+                const hasHalfStar = rating % 1 !== 0;
+                
+                for (let i = 0; i < fullStars; i++) {
+                    stars.push(React.createElement('span', { key: i }, '★'));
+                }
+                
+                if (hasHalfStar) {
+                    stars.push(React.createElement('span', { key: 'half' }, '★'));
+                }
+                
+                const emptyStars = 5 - stars.length;
+                for (let i = 0; i < emptyStars; i++) {
+                    stars.push(React.createElement('span', { key: `empty-${i}`, style: { opacity: 0.3 } }, '★'));
+                }
+                
+                return stars;
+            };
+
             return React.createElement('div', { className: 'product-card' },
-                React.createElement('div', { className: 'product-image' }, product.image),
+                React.createElement('div', { className: 'product-image-container' },
+                    !imageLoaded && React.createElement('div', { 
+                        className: 'product-image image-loading',
+                        style: { height: '200px' }
+                    }),
+                    React.createElement('img', {
+                        className: 'product-image',
+                        src: product.image,
+                        alt: product.name,
+                        onLoad: handleImageLoad,
+                        style: { display: imageLoaded ? 'block' : 'none' }
+                    }),
+                    product.badge && React.createElement('div', { className: 'product-badge' }, product.badge)
+                ),
                 React.createElement('div', { className: 'product-content' },
                     React.createElement('h3', { className: 'product-title' }, product.name),
                     React.createElement('p', { className: 'product-description' }, product.description),
+                    React.createElement('div', { className: 'product-rating' },
+                        renderStars(product.rating),
+                        React.createElement('span', { 
+                            style: { 
+                                color: '#6c757d', 
+                                fontSize: '0.8rem',
+                                marginLeft: '0.5rem'
+                            } 
+                        }, product.rating)
+                    ),
                     React.createElement('div', { className: 'product-price' }, `$${product.price}`),
                     React.createElement('button', {
                         className: `add-to-cart-btn clickable ${inCart ? 'added' : ''} ${isAdding ? 'success-animation' : ''}`,
@@ -807,7 +968,9 @@
         // Cart Item Component
         function CartItem({ item, onUpdateQuantity, onRemove }) {
             return React.createElement('div', { className: 'cart-item' },
-                React.createElement('div', { className: 'cart-item-image' }, item.image),
+                React.createElement('div', { className: 'cart-item-image' },
+                    React.createElement('img', { src: item.image, alt: item.name })
+                ),
                 React.createElement('div', { className: 'cart-item-details' },
                     React.createElement('h3', { className: 'cart-item-title' }, item.name),
                     React.createElement('div', { className: 'cart-item-price' }, `$${item.price}`)
@@ -833,12 +996,13 @@
         }
 
         // Products Page Component
-        function ProductsPage({ products, onAddToCart, cartItems, searchQuery, onSearchChange, categoryFilter, onCategoryChange }) {
+        function ProductsPage({ products, onAddToCart, cartItems, searchQuery, onSearchChange, categoryFilter, onCategoryChange, priceRange, onPriceRangeChange }) {
             const filteredProducts = products.filter(product => {
                 const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                                     product.description.toLowerCase().includes(searchQuery.toLowerCase());
                 const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
-                return matchesSearch && matchesCategory;
+                const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
+                return matchesSearch && matchesCategory && matchesPrice;
             });
 
             const categories = ['all', 'electronics', 'fashion', 'home', 'sports'];
@@ -865,6 +1029,30 @@
                                 category.charAt(0).toUpperCase() + category.slice(1)
                             )
                         )
+                    ),
+                    React.createElement('div', { className: 'price-filter' },
+                        React.createElement('span', {}, 'Price:'),
+                        React.createElement('input', {
+                            type: 'number',
+                            className: 'price-input',
+                            placeholder: 'Min',
+                            value: priceRange.min,
+                            onChange: (e) => onPriceRangeChange({
+                                ...priceRange,
+                                min: Number(e.target.value) || 0
+                            })
+                        }),
+                        React.createElement('span', {}, '-'),
+                        React.createElement('input', {
+                            type: 'number',
+                            className: 'price-input',
+                            placeholder: 'Max',
+                            value: priceRange.max,
+                            onChange: (e) => onPriceRangeChange({
+                                ...priceRange,
+                                max: Number(e.target.value) || 1000
+                            })
+                        })
                     )
                 ),
                 React.createElement('div', { className: 'products-grid' },
@@ -876,259 +1064,11 @@
                         )
                         : filteredProducts.map(product =>
                             React.createElement(ProductCard, {
-                                key: product.id,
-                                product: product,
-                                onAddToCart: onAddToCart,
-                                inCart: cartItems.some(item => item.id === product.id)
-                            })
-                        )
-                )
-            );
-        }
-
-        // Cart Page Component
-        function CartPage({ cartItems, onUpdateQuantity, onRemoveItem, onCheckout }) {
-            const subtotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-            const tax = subtotal * 0.08; // 8% tax
-            const shipping = subtotal > 0 ? 5.99 : 0; // $5.99 shipping
-            const total = subtotal + tax + shipping;
-
-            return React.createElement('div', { className: 'page active' },
-                React.createElement('div', { className: 'cart-container' },
-                    React.createElement('div', { className: 'cart-header' },
-                        React.createElement('h2', { className: 'cart-title' }, 'Shopping Cart'),
-                        React.createElement('span', {}, `${cartItems.length} items`)
-                    ),
-                    cartItems.length === 0
-                        ? React.createElement('div', { className: 'empty-state' },
-                            React.createElement('div', { className: 'empty-icon' }, '🛒'),
-                            React.createElement('h3', {}, 'Your cart is empty'),
-                            React.createElement('p', {}, 'Add some products to get started!')
-                        )
-                        : React.createElement('div', {},
-                            cartItems.map(item =>
-                                React.createElement(CartItem, {
-                                    key: item.id,
-                                    item: item,
-                                    onUpdateQuantity: onUpdateQuantity,
-                                    onRemove: onRemoveItem
-                                })
-                            ),
-                            React.createElement('div', { className: 'cart-summary' },
-                                React.createElement('div', { className: 'summary-row' },
-                                    React.createElement('span', {}, 'Subtotal'),
-                                    React.createElement('span', {}, `$${subtotal.toFixed(2)}`)
-                                ),
-                                React.createElement('div', { className: 'summary-row' },
-                                    React.createElement('span', {}, 'Tax'),
-                                    React.createElement('span', {}, `$${tax.toFixed(2)}`)
-                                ),
-                                React.createElement('div', { className: 'summary-row' },
-                                    React.createElement('span', {}, 'Shipping'),
-                                    React.createElement('span', {}, `$${shipping.toFixed(2)}`)
-                                ),
-                                React.createElement('div', { className: 'summary-row summary-total' },
-                                    React.createElement('span', {}, 'Total'),
-                                    React.createElement('span', {}, `$${total.toFixed(2)}`)
-                                ),
-                                React.createElement('button', {
-                                    className: 'checkout-btn clickable',
-                                    onClick: onCheckout
-                                }, 'Proceed to Checkout')
-                            )
-                        )
-                )
-            );
-        }
-
-        // Profile Page Component
-        function ProfilePage({ orderHistory }) {
-            return React.createElement('div', { className: 'page active' },
-                React.createElement('div', { className: 'profile-container' },
-                    React.createElement('div', { className: 'profile-header' },
-                        React.createElement('div', { className: 'profile-avatar' }, '👤'),
-                        React.createElement('div', { className: 'profile-info' },
-                            React.createElement('h2', {}, 'shaheera sadia'),
-                            React.createElement('p', {}, 'shaheerasadia@example.com')
-                        )
-                    ),
-                    React.createElement('div', { className: 'profile-stats' },
-                        React.createElement('div', { className: 'stat-card' },
-                            React.createElement('div', { className: 'stat-value' }, '12'),
-                            React.createElement('div', { className: 'stat-label' }, 'Orders')
-                        ),
-                        React.createElement('div', { className: 'stat-card' },
-                            React.createElement('div', { className: 'stat-value' }, '4.8'),
-                            React.createElement('div', { className: 'stat-label' }, 'Avg. Rating')
-                        ),
-                        React.createElement('div', { className: 'stat-card' },
-                            React.createElement('div', { className: 'stat-value' }, '$1,248'),
-                            React.createElement('div', { className: 'stat-label' }, 'Total Spent')
-                        )
-                    ),
-                    React.createElement('h3', { style: { marginBottom: '1rem' } }, 'Recent Orders'),
-                    orderHistory.length === 0
-                        ? React.createElement('div', { className: 'empty-state' },
-                            React.createElement('div', { className: 'empty-icon' }, '📦'),
-                            React.createElement('h3', {}, 'No orders yet'),
-                            React.createElement('p', {}, 'Your order history will appear here')
-                        )
-                        : React.createElement('div', {},
-                            orderHistory.map(order =>
-                                React.createElement('div', {
-                                    key: order.id,
-                                    style: {
-                                        padding: '1rem',
-                                        borderBottom: '1px solid #e1e5e9',
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center'
-                                    }
-                                },
-                                    React.createElement('div', {},
-                                        React.createElement('div', { style: { fontWeight: '600' } }, `Order #${order.id}`),
-                                        React.createElement('div', { style: { color: '#6c757d', fontSize: '0.9rem' } }, order.date)
-                                    ),
-                                    React.createElement('div', { style: { fontWeight: '600', color: '#2c5aa0' } }, `$${order.total}`)
-                                )
-                            )
-                        )
-                )
-            );
-        }
-
-        // Footer Component
-        function Footer() {
-            return React.createElement('footer', { className: 'footer' },
-                React.createElement('div', { className: 'container' },
-                    React.createElement('div', { className: 'footer-content' },
-                        React.createElement('p', {}, '© 2025 ShopEasy. All rights reserved.'),
-                        React.createElement('div', { className: 'footer-links' },
-                            React.createElement('a', { href: '#' }, 'Privacy Policy'),
-                            React.createElement('a', { href: '#' }, 'Terms of Service'),
-                            React.createElement('a', { href: '#' }, 'Contact Us'),
-                            React.createElement('a', { href: '#' }, 'About')
-                        )
-                    )
-                )
-            );
-        }
-
-        // Main App Component
-        function App() {
-            const [currentPage, setCurrentPage] = useState('products');
-            const [products] = useState(sampleProducts);
-            const [cartItems, setCartItems] = useState([]);
-            const [orderHistory, setOrderHistory] = useState([]);
-            const [searchQuery, setSearchQuery] = useState('');
-            const [categoryFilter, setCategoryFilter] = useState('all');
-
-            // Load cart and orders from localStorage on component mount
-            useEffect(() => {
-                const savedCart = localStorage.getItem('shoppingCart');
-                const savedOrders = localStorage.getItem('orderHistory');
-                
-                if (savedCart) {
-                    setCartItems(JSON.parse(savedCart));
-                }
-                
-                if (savedOrders) {
-                    setOrderHistory(JSON.parse(savedOrders));
-                }
-            }, []);
-
-            // Save cart to localStorage whenever cart changes
-            useEffect(() => {
-                localStorage.setItem('shoppingCart', JSON.stringify(cartItems));
-            }, [cartItems]);
-
-            const addToCart = (product) => {
-                setCartItems(prevItems => {
-                    const existingItem = prevItems.find(item => item.id === product.id);
-                    
-                    if (existingItem) {
-                        return prevItems.map(item =>
-                            item.id === product.id
-                                ? { ...item, quantity: item.quantity + 1 }
-                                : item
-                        );
-                    } else {
-                        return [...prevItems, { ...product, quantity: 1 }];
-                    }
-                });
-            };
-
-            const updateCartQuantity = (productId, newQuantity) => {
-                if (newQuantity < 1) {
-                    removeFromCart(productId);
-                    return;
-                }
-                
-                setCartItems(prevItems =>
-                    prevItems.map(item =>
-                        item.id === productId
-                            ? { ...item, quantity: newQuantity }
-                            : item
-                    )
-                );
-            };
-
-            const removeFromCart = (productId) => {
-                setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
-            };
-
-            const handleCheckout = () => {
-                if (cartItems.length > 0) {
-                    const newOrder = {
-                        id: Date.now(),
-                        date: new Date().toLocaleDateString(),
-                        items: [...cartItems],
-                        total: cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)
-                    };
-                    
-                    setOrderHistory(prev => [newOrder, ...prev]);
-                    setCartItems([]);
-                    localStorage.setItem('orderHistory', JSON.stringify([newOrder, ...orderHistory]));
-                    alert('Order placed successfully!');
-                    setCurrentPage('products');
-                }
-            };
-
-            return React.createElement('div', { className: 'app' },
-                React.createElement(Header, {
-                    currentPage: currentPage,
-                    onPageChange: setCurrentPage,
-                    cartItems: cartItems
-                }),
-                React.createElement('main', { className: 'main-content' },
-                    React.createElement('div', { className: 'container' },
-                        currentPage === 'products' && React.createElement(ProductsPage, {
-                            products: products,
-                            onAddToCart: addToCart,
-                            cartItems: cartItems,
-                            searchQuery: searchQuery,
-                            onSearchChange: setSearchQuery,
-                            categoryFilter: categoryFilter,
-                            onCategoryChange: setCategoryFilter
-                        }),
-                        currentPage === 'cart' && React.createElement(CartPage, {
-                            cartItems: cartItems,
-                            onUpdateQuantity: updateCartQuantity,
-                            onRemoveItem: removeFromCart,
-                            onCheckout: handleCheckout
-                        }),
-                        currentPage === 'profile' && React.createElement(ProfilePage, {
-                            orderHistory: orderHistory
-                        })
-                    )
-                ),
-                React.createElement(Footer)
-            );
-        }
-
-        // Render the App
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(React.createElement(App));
-    </script>
-</body>
-</html>
+                                key: product.id
+       
+            
+          
+ 
+            
+            
+ 
