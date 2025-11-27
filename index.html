@@ -1,4 +1,5 @@
- <!DOCTYPE html>
+      
+   <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -13,7 +14,6 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -21,9 +21,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: 'Inter', sans-serif;
             background: #f8f9fa;
             min-height: 100vh;
         }
@@ -34,14 +32,12 @@
             flex-direction: column;
         }
 
-        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* Header */
         .header {
             background: white;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -66,22 +62,9 @@
             gap: 0.5rem;
         }
 
-        .header-icon {
-            background: #2c5aa0;
-            color: white;
-            border-radius: 50%;
-            width: 2.5rem;
-            height: 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-
         .nav-buttons {
             display: flex;
             gap: 1rem;
-            align-items: center;
         }
 
         .nav-btn {
@@ -101,7 +84,6 @@
 
         .nav-btn:hover {
             background: #f0f5ff;
-            color: #2c5aa0;
         }
 
         .nav-btn.active {
@@ -122,16 +104,13 @@
             align-items: center;
             justify-content: center;
             font-size: 0.7rem;
-            font-weight: 600;
         }
 
-        /* Main Content */
         .main-content {
             flex: 1;
             padding: 2rem 0;
         }
 
-        /* Page Styles */
         .page {
             display: none;
         }
@@ -140,134 +119,69 @@
             display: block;
         }
 
-        /* Search and Filter */
         .search-filter {
             background: white;
             border-radius: 16px;
             padding: 1.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-            align-items: center;
         }
 
         .search-input {
             flex: 1;
             min-width: 250px;
-            padding: 1rem 1.5rem;
+            padding: 1rem;
             border: 2px solid #e1e5e9;
             border-radius: 12px;
             font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #2c5aa0;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(44, 90, 160, 0.1);
         }
 
         .category-filter {
-            padding: 1rem 1.5rem;
+            padding: 1rem;
             border: 2px solid #e1e5e9;
             border-radius: 12px;
-            font-size: 1rem;
-            background: #f8f9fa;
-            cursor: pointer;
             min-width: 150px;
         }
 
-        .price-filter {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .price-input {
-            width: 80px;
-            padding: 0.5rem;
-            border: 1px solid #e1e5e9;
-            border-radius: 6px;
-            text-align: center;
-        }
-
-        /* Products Grid */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
-            margin-bottom: 2rem;
         }
 
-        /* Product Card */
         .product-card {
             background: white;
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .product-image-container {
-            position: relative;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
         }
 
         .product-image {
             width: 100%;
-            height: 100%;
+            height: 200px;
             object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
-
-        .product-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #e74c3c;
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
         }
 
         .product-content {
             padding: 1.5rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
 
         .product-title {
             font-size: 1.2rem;
             font-weight: 600;
-            color: #333;
             margin-bottom: 0.5rem;
         }
 
         .product-description {
             color: #6c757d;
-            font-size: 0.9rem;
             margin-bottom: 1rem;
-            flex: 1;
         }
 
         .product-price {
@@ -275,14 +189,6 @@
             font-weight: 700;
             color: #2c5aa0;
             margin-bottom: 1rem;
-        }
-
-        .product-rating {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            margin-bottom: 1rem;
-            color: #ffc107;
         }
 
         .add-to-cart-btn {
@@ -293,89 +199,24 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
+            width: 100%;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
         }
 
         .add-to-cart-btn:hover {
             background: #1e3d6f;
-            transform: translateY(-2px);
-        }
-
-        .add-to-cart-btn:active {
-            transform: translateY(0);
         }
 
         .add-to-cart-btn.added {
             background: #27ae60;
         }
 
-        /* Cart Page */
         .cart-container {
             background: white;
             border-radius: 16px;
             padding: 2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e1e5e9;
-        }
-
-        .cart-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .cart-summary {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-        }
-
-        .summary-total {
-            font-weight: 700;
-            font-size: 1.2rem;
-            border-top: 1px solid #e1e5e9;
-            margin-top: 0.5rem;
-            padding-top: 0.5rem;
-        }
-
-        .checkout-btn {
-            background: #27ae60;
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            margin-top: 1.5rem;
-        }
-
-        .checkout-btn:hover {
-            background: #219653;
-            transform: translateY(-2px);
-        }
-
-        /* Cart Item */
         .cart-item {
             display: flex;
             align-items: center;
@@ -384,42 +225,15 @@
             gap: 1rem;
         }
 
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-
         .cart-item-image {
             width: 80px;
             height: 80px;
             border-radius: 8px;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .cart-item-image img {
-            width: 100%;
-            height: 100%;
             object-fit: cover;
         }
 
         .cart-item-details {
             flex: 1;
-        }
-
-        .cart-item-title {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .cart-item-price {
-            color: #2c5aa0;
-            font-weight: 600;
-        }
-
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
         }
 
         .quantity-controls {
@@ -434,123 +248,27 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .quantity-btn:hover {
-            background: #e9ecef;
-        }
-
-        .quantity {
-            font-weight: 600;
-            min-width: 30px;
-            text-align: center;
-        }
-
-        .remove-btn {
-            background: none;
+        .checkout-btn {
+            background: #27ae60;
+            color: white;
             border: none;
-            color: #e74c3c;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 1.5rem;
         }
 
-        .remove-btn:hover {
-            background: #fdf2f2;
-        }
-
-        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
             color: #6c757d;
         }
 
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        .empty-state h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .empty-state p {
-            font-size: 1rem;
-        }
-
-        /* Profile Page */
-        .profile-container {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-        }
-
-        .profile-info h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .profile-info p {
-            color: #6c757d;
-        }
-
-        .profile-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #2c5aa0;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-
-        /* Footer */
         .footer {
             background: #2c3e50;
             color: white;
@@ -558,164 +276,20 @@
             margin-top: auto;
         }
 
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: white;
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .header-title {
-                font-size: 1.5rem;
-            }
-            
-            .header-icon {
-                width: 2rem;
-                height: 2rem;
-                font-size: 1rem;
-            }
-            
-            .nav-buttons {
-                gap: 0.5rem;
-            }
-            
-            .nav-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.8rem;
-            }
-            
-            .search-filter {
+            .header-content {
                 flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .search-input, .category-filter {
-                min-width: auto;
-            }
-            
-            .price-filter {
-                justify-content: center;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-            
-            .cart-item {
-                flex-direction: column;
-                align-items: flex-start;
                 gap: 1rem;
-            }
-            
-            .cart-item-controls {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 15px;
-            }
-            
-            .header {
-                padding: 0.75rem 0;
-            }
-            
-            .header-title {
-                font-size: 1.3rem;
-            }
-            
-            .nav-buttons {
-                flex-direction: column;
-                gap: 0.5rem;
             }
             
             .products-grid {
                 grid-template-columns: 1fr;
             }
             
-            .cart-container, .profile-container {
-                padding: 1.5rem;
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
             }
-        }
-
-        /* Animation */
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .product-card, .cart-item {
-            animation: slideIn 0.3s ease;
-        }
-
-        /* Button click animation */
-        .clickable {
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .clickable:active {
-            transform: scale(0.95);
-        }
-
-        /* Success animation */
-        @keyframes successPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .success-animation {
-            animation: successPulse 0.5s ease;
-        }
-        
-        /* Loading state */
-        .image-loading {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-        
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
         }
     </style>
 </head>
@@ -725,7 +299,7 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // Sample product data with real image URLs
+        // Product data with real images
         const sampleProducts = [
             {
                 id: 1,
@@ -733,9 +307,7 @@
                 description: "High-quality wireless headphones with noise cancellation",
                 price: 149.99,
                 category: "electronics",
-                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.5,
-                badge: "Bestseller"
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400"
             },
             {
                 id: 2,
@@ -743,9 +315,7 @@
                 description: "Feature-rich smartwatch with health monitoring",
                 price: 199.99,
                 category: "electronics",
-                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.3,
-                badge: "New"
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400"
             },
             {
                 id: 3,
@@ -753,9 +323,7 @@
                 description: "Comfortable running shoes for all terrains",
                 price: 89.99,
                 category: "fashion",
-                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.7,
-                badge: "Popular"
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400"
             },
             {
                 id: 4,
@@ -763,8 +331,7 @@
                 description: "Durable backpack with laptop compartment",
                 price: 59.99,
                 category: "fashion",
-                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.4
+                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400"
             },
             {
                 id: 5,
@@ -772,76 +339,15 @@
                 description: "Automatic coffee maker with programmable settings",
                 price: 79.99,
                 category: "home",
-                image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.6,
-                badge: "Sale"
+                image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400"
             },
             {
                 id: 6,
                 name: "Desk Lamp",
-                description: "Adjustable LED desk lamp with multiple brightness levels",
+                description: "Adjustable LED desk lamp",
                 price: 39.99,
                 category: "home",
-                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.2
-            },
-            {
-                id: 7,
-                name: "Yoga Mat",
-                description: "Non-slip yoga mat for comfortable workouts",
-                price: 29.99,
-                category: "sports",
-                image: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.8,
-                badge: "Bestseller"
-            },
-            {
-                id: 8,
-                name: "Water Bottle",
-                description: "Insulated water bottle that keeps drinks cold for 24 hours",
-                price: 24.99,
-                category: "sports",
-                image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.5
-            },
-            {
-                id: 9,
-                name: "Laptop",
-                description: "High-performance laptop for work and gaming",
-                price: 899.99,
-                category: "electronics",
-                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.7,
-                badge: "Premium"
-            },
-            {
-                id: 10,
-                name: "Smartphone",
-                description: "Latest smartphone with advanced camera features",
-                price: 699.99,
-                category: "electronics",
-                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.6,
-                badge: "New"
-            },
-            {
-                id: 11,
-                name: "Sunglasses",
-                description: "Stylish sunglasses with UV protection",
-                price: 49.99,
-                category: "fashion",
-                image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.3
-            },
-            {
-                id: 12,
-                name: "Blender",
-                description: "Powerful blender for smoothies and food preparation",
-                price: 69.99,
-                category: "home",
-                image: "https://images.unsplash.com/photo-1571224237891-bfb7fcd7d9cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-                rating: 4.4,
-                badge: "Sale"
+                image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=400"
             }
         ];
 
@@ -853,31 +359,19 @@
                 React.createElement('div', { className: 'container' },
                     React.createElement('div', { className: 'header-content' },
                         React.createElement('h1', { className: 'header-title' },
-                            React.createElement('span', { className: 'header-icon' }, '🛒'),
-                            'ShopEasy'
+                            '🛒 ShopEasy'
                         ),
                         React.createElement('div', { className: 'nav-buttons' },
                             React.createElement('button', {
-                                className: `nav-btn clickable ${currentPage === 'products' ? 'active' : ''}`,
+                                className: `nav-btn ${currentPage === 'products' ? 'active' : ''}`,
                                 onClick: () => onPageChange('products')
-                            },
-                                React.createElement('span', {}, '🏪'),
-                                'Products'
-                            ),
+                            }, 'Products'),
                             React.createElement('button', {
-                                className: `nav-btn clickable ${currentPage === 'cart' ? 'active' : ''}`,
+                                className: `nav-btn ${currentPage === 'cart' ? 'active' : ''}`,
                                 onClick: () => onPageChange('cart')
-                            },
-                                React.createElement('span', {}, '🛍️'),
+                            }, 
                                 'Cart',
                                 cartItemCount > 0 && React.createElement('span', { className: 'cart-badge' }, cartItemCount)
-                            ),
-                            React.createElement('button', {
-                                className: `nav-btn clickable ${currentPage === 'profile' ? 'active' : ''}`,
-                                onClick: () => onPageChange('profile')
-                            },
-                                React.createElement('span', {}, '👤'),
-                                'Profile'
                             )
                         )
                     )
@@ -887,80 +381,20 @@
 
         // Product Card Component
         function ProductCard({ product, onAddToCart, inCart }) {
-            const [isAdding, setIsAdding] = useState(false);
-            const [imageLoaded, setImageLoaded] = useState(false);
-
-            const handleAddToCart = async () => {
-                if (!isAdding) {
-                    setIsAdding(true);
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    onAddToCart(product);
-                    setIsAdding(false);
-                }
-            };
-
-            const handleImageLoad = () => {
-                setImageLoaded(true);
-            };
-
-            const renderStars = (rating) => {
-                const stars = [];
-                const fullStars = Math.floor(rating);
-                const hasHalfStar = rating % 1 !== 0;
-                
-                for (let i = 0; i < fullStars; i++) {
-                    stars.push(React.createElement('span', { key: i }, '★'));
-                }
-                
-                if (hasHalfStar) {
-                    stars.push(React.createElement('span', { key: 'half' }, '★'));
-                }
-                
-                const emptyStars = 5 - stars.length;
-                for (let i = 0; i < emptyStars; i++) {
-                    stars.push(React.createElement('span', { key: `empty-${i}`, style: { opacity: 0.3 } }, '★'));
-                }
-                
-                return stars;
-            };
-
             return React.createElement('div', { className: 'product-card' },
-                React.createElement('div', { className: 'product-image-container' },
-                    !imageLoaded && React.createElement('div', { 
-                        className: 'product-image image-loading',
-                        style: { height: '200px' }
-                    }),
-                    React.createElement('img', {
-                        className: 'product-image',
-                        src: product.image,
-                        alt: product.name,
-                        onLoad: handleImageLoad,
-                        style: { display: imageLoaded ? 'block' : 'none' }
-                    }),
-                    product.badge && React.createElement('div', { className: 'product-badge' }, product.badge)
-                ),
+                React.createElement('img', { 
+                    className: 'product-image', 
+                    src: product.image, 
+                    alt: product.name 
+                }),
                 React.createElement('div', { className: 'product-content' },
                     React.createElement('h3', { className: 'product-title' }, product.name),
                     React.createElement('p', { className: 'product-description' }, product.description),
-                    React.createElement('div', { className: 'product-rating' },
-                        renderStars(product.rating),
-                        React.createElement('span', { 
-                            style: { 
-                                color: '#6c757d', 
-                                fontSize: '0.8rem',
-                                marginLeft: '0.5rem'
-                            } 
-                        }, product.rating)
-                    ),
                     React.createElement('div', { className: 'product-price' }, `$${product.price}`),
                     React.createElement('button', {
-                        className: `add-to-cart-btn clickable ${inCart ? 'added' : ''} ${isAdding ? 'success-animation' : ''}`,
-                        onClick: handleAddToCart,
-                        disabled: isAdding
-                    },
-                        React.createElement('span', {}, inCart ? '✓' : '+'),
-                        inCart ? 'Added to Cart' : (isAdding ? 'Adding...' : 'Add to Cart')
-                    )
+                        className: `add-to-cart-btn ${inCart ? 'added' : ''}`,
+                        onClick: () => onAddToCart(product)
+                    }, inCart ? 'Added to Cart' : 'Add to Cart')
                 )
             );
         }
@@ -968,44 +402,39 @@
         // Cart Item Component
         function CartItem({ item, onUpdateQuantity, onRemove }) {
             return React.createElement('div', { className: 'cart-item' },
-                React.createElement('div', { className: 'cart-item-image' },
-                    React.createElement('img', { src: item.image, alt: item.name })
-                ),
+                React.createElement('img', { 
+                    className: 'cart-item-image', 
+                    src: item.image, 
+                    alt: item.name 
+                }),
                 React.createElement('div', { className: 'cart-item-details' },
-                    React.createElement('h3', { className: 'cart-item-title' }, item.name),
-                    React.createElement('div', { className: 'cart-item-price' }, `$${item.price}`)
+                    React.createElement('h3', {}, item.name),
+                    React.createElement('p', {}, `$${item.price}`)
                 ),
-                React.createElement('div', { className: 'cart-item-controls' },
-                    React.createElement('div', { className: 'quantity-controls' },
-                        React.createElement('button', {
-                            className: 'quantity-btn clickable',
-                            onClick: () => onUpdateQuantity(item.id, item.quantity - 1)
-                        }, '-'),
-                        React.createElement('span', { className: 'quantity' }, item.quantity),
-                        React.createElement('button', {
-                            className: 'quantity-btn clickable',
-                            onClick: () => onUpdateQuantity(item.id, item.quantity + 1)
-                        }, '+')
-                    ),
+                React.createElement('div', { className: 'quantity-controls' },
                     React.createElement('button', {
-                        className: 'remove-btn clickable',
-                        onClick: () => onRemove(item.id)
-                    }, 'Remove')
-                )
+                        className: 'quantity-btn',
+                        onClick: () => onUpdateQuantity(item.id, item.quantity - 1)
+                    }, '-'),
+                    React.createElement('span', {}, item.quantity),
+                    React.createElement('button', {
+                        className: 'quantity-btn',
+                        onClick: () => onUpdateQuantity(item.id, item.quantity + 1)
+                    }, '+')
+                ),
+                React.createElement('button', {
+                    onClick: () => onRemove(item.id)
+                }, 'Remove')
             );
         }
 
         // Products Page Component
-        function ProductsPage({ products, onAddToCart, cartItems, searchQuery, onSearchChange, categoryFilter, onCategoryChange, priceRange, onPriceRangeChange }) {
+        function ProductsPage({ products, onAddToCart, cartItems, searchQuery, onSearchChange, categoryFilter, onCategoryChange }) {
             const filteredProducts = products.filter(product => {
-                const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                                    product.description.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
                 const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
-                const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
-                return matchesSearch && matchesCategory && matchesPrice;
+                return matchesSearch && matchesCategory;
             });
-
-            const categories = ['all', 'electronics', 'fashion', 'home', 'sports'];
 
             return React.createElement('div', { className: 'page active' },
                 React.createElement('div', { className: 'search-filter' },
@@ -1021,54 +450,169 @@
                         value: categoryFilter,
                         onChange: (e) => onCategoryChange(e.target.value)
                     },
-                        categories.map(category => 
-                            React.createElement('option', { 
-                                key: category, 
-                                value: category 
-                            }, 
-                                category.charAt(0).toUpperCase() + category.slice(1)
-                            )
-                        )
-                    ),
-                    React.createElement('div', { className: 'price-filter' },
-                        React.createElement('span', {}, 'Price:'),
-                        React.createElement('input', {
-                            type: 'number',
-                            className: 'price-input',
-                            placeholder: 'Min',
-                            value: priceRange.min,
-                            onChange: (e) => onPriceRangeChange({
-                                ...priceRange,
-                                min: Number(e.target.value) || 0
-                            })
-                        }),
-                        React.createElement('span', {}, '-'),
-                        React.createElement('input', {
-                            type: 'number',
-                            className: 'price-input',
-                            placeholder: 'Max',
-                            value: priceRange.max,
-                            onChange: (e) => onPriceRangeChange({
-                                ...priceRange,
-                                max: Number(e.target.value) || 1000
-                            })
-                        })
+                        React.createElement('option', { value: 'all' }, 'All Categories'),
+                        React.createElement('option', { value: 'electronics' }, 'Electronics'),
+                        React.createElement('option', { value: 'fashion' }, 'Fashion'),
+                        React.createElement('option', { value: 'home' }, 'Home')
                     )
                 ),
                 React.createElement('div', { className: 'products-grid' },
                     filteredProducts.length === 0
                         ? React.createElement('div', { className: 'empty-state' },
-                            React.createElement('div', { className: 'empty-icon' }, '🔍'),
                             React.createElement('h3', {}, 'No products found'),
-                            React.createElement('p', {}, 'Try adjusting your search or filter')
+                            React.createElement('p', {}, 'Try adjusting your search')
                         )
                         : filteredProducts.map(product =>
                             React.createElement(ProductCard, {
-                                key: product.id
-       
-            
-          
- 
-            
-            
- 
+                                key: product.id,
+                                product: product,
+                                onAddToCart: onAddToCart,
+                                inCart: cartItems.some(item => item.id === product.id)
+                            })
+                        )
+                )
+            );
+        }
+
+        // Cart Page Component
+        function CartPage({ cartItems, onUpdateQuantity, onRemoveItem, onCheckout }) {
+            const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            return React.createElement('div', { className: 'page active' },
+                React.createElement('div', { className: 'cart-container' },
+                    cartItems.length === 0
+                        ? React.createElement('div', { className: 'empty-state' },
+                            React.createElement('h3', {}, 'Your cart is empty'),
+                            React.createElement('p', {}, 'Add some products to get started!')
+                        )
+                        : React.createElement('div', {},
+                            cartItems.map(item =>
+                                React.createElement(CartItem, {
+                                    key: item.id,
+                                    item: item,
+                                    onUpdateQuantity: onUpdateQuantity,
+                                    onRemove: onRemoveItem
+                                })
+                            ),
+                            React.createElement('div', { style: { textAlign: 'center', marginTop: '2rem' } },
+                                React.createElement('h3', {}, `Total: $${total.toFixed(2)}`),
+                                React.createElement('button', {
+                                    className: 'checkout-btn',
+                                    onClick: onCheckout
+                                }, 'Proceed to Checkout')
+                            )
+                        )
+                )
+            );
+        }
+
+        // Footer Component
+        function Footer() {
+            return React.createElement('footer', { className: 'footer' },
+                React.createElement('div', { className: 'container' },
+                    React.createElement('p', { style: { textAlign: 'center' } }, 
+                        '© 2024 ShopEasy. All rights reserved.'
+                    )
+                )
+            );
+        }
+
+        // Main App Component
+        function App() {
+            const [currentPage, setCurrentPage] = useState('products');
+            const [products] = useState(sampleProducts);
+            const [cartItems, setCartItems] = useState([]);
+            const [searchQuery, setSearchQuery] = useState('');
+            const [categoryFilter, setCategoryFilter] = useState('all');
+
+            // Load cart from localStorage
+            useEffect(() => {
+                const savedCart = localStorage.getItem('shoppingCart');
+                if (savedCart) {
+                    setCartItems(JSON.parse(savedCart));
+                }
+            }, []);
+
+            // Save cart to localStorage
+            useEffect(() => {
+                localStorage.setItem('shoppingCart', JSON.stringify(cartItems));
+            }, [cartItems]);
+
+            const addToCart = (product) => {
+                setCartItems(prevItems => {
+                    const existingItem = prevItems.find(item => item.id === product.id);
+                    if (existingItem) {
+                        return prevItems.map(item =>
+                            item.id === product.id
+                                ? { ...item, quantity: item.quantity + 1 }
+                                : item
+                        );
+                    } else {
+                        return [...prevItems, { ...product, quantity: 1 }];
+                    }
+                });
+            };
+
+            const updateCartQuantity = (productId, newQuantity) => {
+                if (newQuantity < 1) {
+                    removeFromCart(productId);
+                    return;
+                }
+                setCartItems(prevItems =>
+                    prevItems.map(item =>
+                        item.id === productId
+                            ? { ...item, quantity: newQuantity }
+                            : item
+                    )
+                );
+            };
+
+            const removeFromCart = (productId) => {
+                setCartItems(prevItems => prevItems.filter(item => item.id !== productId));
+            };
+
+            const handleCheckout = () => {
+                if (cartItems.length > 0) {
+                    alert('Order placed successfully!');
+                    setCartItems([]);
+                    setCurrentPage('products');
+                }
+            };
+
+            return React.createElement('div', { className: 'app' },
+                React.createElement(Header, {
+                    currentPage: currentPage,
+                    onPageChange: setCurrentPage,
+                    cartItems: cartItems
+                }),
+                React.createElement('main', { className: 'main-content' },
+                    React.createElement('div', { className: 'container' },
+                        currentPage === 'products' && React.createElement(ProductsPage, {
+                            products: products,
+                            onAddToCart: addToCart,
+                            cartItems: cartItems,
+                            searchQuery: searchQuery,
+                            onSearchChange: setSearchQuery,
+                            categoryFilter: categoryFilter,
+                            onCategoryChange: setCategoryFilter
+                        }),
+                        currentPage === 'cart' && React.createElement(CartPage, {
+                            cartItems: cartItems,
+                            onUpdateQuantity: updateCartQuantity,
+                            onRemoveItem: removeFromCart,
+                            onCheckout: handleCheckout
+                        })
+                    )
+                ),
+                React.createElement(Footer)
+            );
+        }
+
+        // Render the App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>            
+                           
+                     
