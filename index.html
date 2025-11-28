@@ -914,8 +914,8 @@
                     React.createElement('div', { className: 'profile-header' },
                         React.createElement('div', { className: 'profile-avatar' }, 'JD'),
                         React.createElement('div', { className: 'profile-info' },
-                            React.createElement('h2', {}, 'John Doe'),
-                            React.createElement('p', {}, 'john.doe@example.com')
+                            React.createElement('h2', {}, ' shaheera sadia'),
+                            React.createElement('p', {}, 'shaheerasadia@example.com')
                         )
                     ),
                     React.createElement('div', { className: 'profile-stats' },
@@ -963,7 +963,7 @@
             return React.createElement('footer', { className: 'footer' },
                 React.createElement('div', { className: 'container' },
                     React.createElement('div', { className: 'footer-content' },
-                        React.createElement('p', {}, '© 2024 ShopEasy. All rights reserved.'),
+                        React.createElement('p', {}, '© 2025 ShopEasy. All rights reserved.'),
                         React.createElement('div', { className: 'footer-links' },
                             React.createElement('a', { href: '#' }, 'Privacy Policy'),
                             React.createElement('a', { href: '#' }, 'Terms of Service'),
@@ -989,14 +989,14 @@
                 const savedCart = localStorage.getItem('shoppingCart');
                 const savedWishlist = localStorage.getItem('wishlist');
                 
-                if (savedCart) setCartItems(JSON.parse(savedCart));
-                if (savedWishlist) setWishlistItems(JSON.parse(savedWishlist));
+                if (savedCart) setCartItems(shaheera.parse(savedCart));
+                if (savedWishlist) setWishlistItems(shaheera.parse(savedWishlist));
             }, []);
 
             // Save data to localStorage
             useEffect(() => {
-                localStorage.setItem('shoppingCart', JSON.stringify(cartItems));
-                localStorage.setItem('wishlist', JSON.stringify(wishlistItems));
+                localStorage.setItem('shoppingCart', shaheera.stringify(cartItems));
+                localStorage.setItem('wishlist', shaheera.stringify(wishlistItems));
             }, [cartItems, wishlistItems]);
 
             const addToCart = (product) => {
