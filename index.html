@@ -914,7 +914,7 @@
                     React.createElement('div', { className: 'profile-header' },
                         React.createElement('div', { className: 'profile-avatar' }, 'JD'),
                         React.createElement('div', { className: 'profile-info' },
-                            React.createElement('h2', {}, ' shaheera sadia'),
+                            React.createElement('h2', {}, 'shaheera sadia'),
                             React.createElement('p', {}, 'shaheerasadia@example.com')
                         )
                     ),
@@ -989,14 +989,14 @@
                 const savedCart = localStorage.getItem('shoppingCart');
                 const savedWishlist = localStorage.getItem('wishlist');
                 
-                if (savedCart) setCartItems(shaheera.parse(savedCart));
-                if (savedWishlist) setWishlistItems(shaheera.parse(savedWishlist));
+                if (savedCart) setCartItems(JSON.parse(savedCart));
+                if (savedWishlist) setWishlistItems(JSON.parse(savedWishlist));
             }, []);
 
             // Save data to localStorage
             useEffect(() => {
-                localStorage.setItem('shoppingCart', shaheera.stringify(cartItems));
-                localStorage.setItem('wishlist', shaheera.stringify(wishlistItems));
+                localStorage.setItem('shoppingCart', JSON.stringify(cartItems));
+                localStorage.setItem('wishlist', JSON.stringify(wishlistItems));
             }, [cartItems, wishlistItems]);
 
             const addToCart = (product) => {
