@@ -1,82 +1,71 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop & Earn - Shaheera Sadia</title>
+    <title>Shaheera Store - Shop & Earn</title>
+    
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary: #2c5aa0;
-            --premium: #f39c12; /* گولڈن رنگ پریمیم کے لیے */
-            --bg: #f4f7f6;
+            --secondary: #27ae60;
+            --premium: #f39c12;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --text: #1e293b;
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
-        
-        /* Ad Space Styling */
-        .ad-placeholder {
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--light-bg); color: var(--text); }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- Header --- */
+        .header { background: var(--white); padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+
+        /* --- Ad Space (Monetization Slot 1) --- */
+        .ad-banner {
             background: #e2e8f0;
-            border: 2px dashed #cbd5e0;
-            text-align: center;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            color: #718096;
-            font-size: 0.8rem;
-        }
-
-        /* Products Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: 0.3s;
-            position: relative;
-        }
-
-        .premium-tag {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--premium);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-
-        .product-img { width: 100%; height: 200px; object-fit: cover; }
-        .product-info { padding: 15px; }
-
-        .btn-buy {
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Sidebar for Monetization Info */
-        .monetization-bar {
-            background: white;
-            padding: 15px;
+            border: 2px dashed #94a3b8;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
             border-radius: 12px;
-            margin-top: 30px;
-            border-left: 5px solid var(--premium);
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        /* --- Products Grid --- */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding-bottom: 50px; }
+
+        .card { background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; position: relative; border: 1px solid #f1f5f9; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card-body { padding: 20px; }
+        .premium-tag { position: absolute; top: 10px; right: 10px; background: var(--premium); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; }
+
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-buy { background: var(--primary); color: white; margin-top: 10px; }
+        .btn-buy:hover { background: #1e4275; }
+
+        /* --- Profile Card --- */
+        .profile-card { background: var(--white); padding: 40px; border-radius: 24px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 40px 0; }
+        .avatar { width: 80px; height: 80px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 2rem; font-weight: bold; }
+
+        /* --- Footer --- */
+        .footer { background: #0f172a; color: #94a3b8; padding: 40px 0; text-align: center; margin-top: auto; }
+        
+        @media (max-width: 600px) {
+            .header-content { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
@@ -87,59 +76,91 @@
         const { useState } = React;
 
         const App = () => {
+            const [page, setPage] = useState('shop');
             const [isPremium, setIsPremium] = useState(false);
 
+            const user = {
+                name: "Shaheera Sadia",
+                email: "shaheera.sadia@example.com",
+                pubID: "pub-0000000000000000" // اپنی AdMob پبلشر آئی ڈی یہاں ڈالیں
+            };
+
             const products = [
-                { id: 1, name: "Smart Watch", price: 199, type: "free", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" },
-                { id: 2, name: "Premium Lens", price: 599, type: "premium", img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400" },
-                { id: 3, name: "Wireless Buds", price: 89, type: "free", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" }
+                { id: 1, name: "Smart Watch Elite", price: 150, premium: false, img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" },
+                { id: 2, name: "Premium Headphones", price: 299, premium: true, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" },
+                { id: 3, name: "Camera Lens Pro", price: 450, premium: true, img: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400" },
+                { id: 4, name: "Fitness Tracker", price: 80, premium: false, img: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=400" }
             ];
 
             return (
-                <div className="container">
-                    {/* 1. AdMob Banner Placeholder (Earning Method 1) */}
-                    {!isPremium && (
-                        <div className="ad-placeholder">
-                            Google AdMob Banner Display Area (Earning Revenue...)
+                <div style={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
+                    {/* Navigation */}
+                    <header className="header">
+                        <div className="container header-content">
+                            <div className="logo">🛒 ShopEasy</div>
+                            <nav>
+                                <button className="btn" style={{background: 'none', color: page === 'shop' ? 'var(--primary)' : '#666'}} onClick={() => setPage('shop')}>Store</button>
+                                <button className="btn" style={{background: 'none', color: page === 'profile' ? 'var(--primary)' : '#666'}} onClick={() => setPage('profile')}>Profile</button>
+                                <button className="btn" style={{background: 'var(--premium)', color: 'white', marginLeft: '10px'}} onClick={() => setIsPremium(!isPremium)}>
+                                    {isPremium ? "Premium On" : "Go Premium"}
+                                </button>
+                            </nav>
                         </div>
-                    )}
-
-                    <header style={{display: 'flex', justifyContent: 'space-between', marginBottom: '30px'}}>
-                        <h1>Shaheera's Store</h1>
-                        <button 
-                            onClick={() => setIsPremium(!isPremium)}
-                            style={{background: var(--premium), border: 'none', padding: '10px', borderRadius: '8px', color: 'white', fontWeight: 'bold', cursor: 'pointer'}}
-                        >
-                            {isPremium ? "Premium Active" : "Go Premium ($5)"}
-                        </button>
                     </header>
 
-                    {/* 2. Products Section (Earning Method 2: Sales/Affiliate) */}
-                    <div className="products-grid">
-                        {products.map(p => (
-                            <div key={p.id} className="product-card">
-                                {p.type === 'premium' && <span className="premium-tag">PREMIUM</span>}
-                                <img src={p.img} className="product-img" alt={p.name} />
-                                <div className="product-info">
-                                    <h3>{p.name}</h3>
-                                    <p style={{color: 'var(--primary)', fontWeight: 'bold'}}>${p.price}</p>
-                                    <button className="btn-buy" onClick={() => alert('Redirecting to Affiliate/Payment Link...')}>
-                                        {p.type === 'premium' && !isPremium ? "Unlock with Premium" : "Buy Now"}
-                                    </button>
-                                </div>
+                    <main className="container" style={{flex: 1}}>
+                        {/* Monetization Slot 1: Banner Ad */}
+                        {!isPremium && (
+                            <div className="ad-banner">
+                                [ Google AdMob Banner Ad Slot ] <br/>
+                                Publisher ID: {user.pubID}
                             </div>
-                        ))}
-                    </div>
+                        )}
 
-                    {/* 3. Monetization Insights for You */}
-                    <div className="monetization-bar">
-                        <h4>💡 Monetization Strategy for Shaheera:</h4>
-                        <ul style={{fontSize: '0.9rem', color: '#4a5568', marginTop: '10px'}}>
-                            <li><b>Ads:</b> Banner ads are hidden for Premium users (Upsell strategy).</li>
-                            <li><b>Affiliate:</b> "Buy Now" can be a Pinterest/Amazon affiliate link.</li>
-                            <li><b>Subscriptions:</b> "Go Premium" button simulates a one-time or monthly payment.</li>
-                        </ul>
-                    </div>
+                        {page === 'shop' ? (
+                            <section>
+                                <h2 style={{margin: '30px 0'}}>New Arrivals</h2>
+                                <div className="products-grid">
+                                    {products.map(p => (
+                                        <div key={p.id} className="card">
+                                            {p.premium && <span className="premium-tag">PREMIUM</span>}
+                                            <img src={p.img} alt={p.name} />
+                                            <div className="card-body">
+                                                <h3>{p.name}</h3>
+                                                <p style={{color: 'var(--primary)', fontWeight: 'bold', fontSize: '1.2rem'}}>${p.price}</p>
+                                                <button className="btn btn-buy" onClick={() => alert('Order Placed Successfully!')}>
+                                                    {p.premium && !isPremium ? "Unlock Premium to Buy" : "Buy Now"}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        ) : (
+                            <section className="profile-section">
+                                <div className="profile-card">
+                                    <div className="avatar">SS</div>
+                                    <h1>{user.name}</h1>
+                                    <p style={{color: '#64748b'}}>{user.email}</p>
+                                    <div style={{marginTop: '20px', padding: '15px', background: '#f1f5f9', borderRadius: '12px'}}>
+                                        <strong>Earning Info:</strong> <br/>
+                                        Status: {isPremium ? "Premium User" : "Ad-Supported Mode"}
+                                    </div>
+                                </div>
+                            </section>
+                        )}
+                    </main>
+
+                    {/* Footer */}
+                    <footer className="footer">
+                        <div className="container">
+                            <p style={{color: 'white', fontWeight: '700'}}>{user.name}</p>
+                            <p style={{fontSize: '0.8rem', marginTop: '5px'}}>Official Monetized Store Application © 2026</p>
+                            <p style={{fontSize: '0.7rem', color: '#475569', marginTop: '10px'}}>
+                                Ensure `app-ads.txt` is uploaded to your Vercel root for AdMob approval.
+                            </p>
+                        </div>
+                    </footer>
                 </div>
             );
         };
@@ -148,4 +169,4 @@
         root.render(<App />);
     </script>
 </body>
-</html> 
+</html>
